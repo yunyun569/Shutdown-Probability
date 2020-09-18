@@ -1,0 +1,40 @@
+---
+title: "Probability of iclDowntime"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+Every night between 7pm and midnight two computing jobs from two different sources are randomly started with each one lasting one hour. Unfortunately, when the jobs simultaneously run, they cause a failure in some of the other company’s nightly jobs, resulting in downtime for the company that costs it one thousand dollars. Assume that the start times of the two jobs are independent of one another, and that each one individually has the property that given two time intervals of equal duration in the 7pm-midnight period, the chance the job starts in the first interval is equal to that of the second interval. The CEO, who only has enough time today to hear no more than one word, needs a single number representing the annual (365 days) cost of this problem. What is your succinct response?
+
+```{r}
+down <- logical() # logical vector for the system status (down = 1, not down = 0)
+p_down <- numeric() # proportion of downtime in simulation
+for (j in 1:1000) { # simulate 1000 years
+  for (i in 1:365) { # simulate 1 year
+  x1 <- runif(n = 1, 7,12)  # start time of job 1
+  x2 <- runif(n=1,7,12)   # star time of job 2
+  down[i] <- abs(x1-x2)<1 # the system is down if the right side true
+  }
+
+ p_down[j] <- mean(down) #proportions of downtime with simulation of 1000 years
+}
+  
+
+hist(p_down)
+abline(v = mean(p_down), lty = 2, col = "blue")
+
+mean(p_down)
+
+annual_lost <- 365*mean(p_down)*1000
+annual_lost
+```
+
+```{r}
+
+x <- seq(-5,5,001)
+ y <- ifelse (x < 0, x/25+1/5, -x/25+1/5)
+plot(x, y, type = "l")
+```
+
+
